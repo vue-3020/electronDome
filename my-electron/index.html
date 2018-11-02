@@ -8,14 +8,14 @@
 </head>
 <body>
   <div id="content">
-      
+      <p>拖拽功能</p>
   </div>
   <div>
       <button  id="btn">点击调用json</button>
       <textarea id="textarea" cols="20" rows="20"></textarea>
   </div>
   <br>
-  <button id="remover">调用主进程</button>
+  <button id="remover">调用主进程打开新窗口</button>
   <br>
   <button id="send"> 渲染进程执行主进程里的方法 </button>
   <br>
@@ -24,14 +24,15 @@
   <button id="sendsync">同步广播 （主进程和渲染进程）</button>
   <script src="renderer/index.js"></script>
   <script src="renderer/remover.js"></script>
-  <!-- 右键菜单 -->
-  <script src="renderer/rightMenu.js"></script>
   <!-- 调用主进程的方法 -->
   <script src="renderer/ipcRenderer.js"></script>
+  <!-- 右键菜单 -->
+  <script src="renderer/righKeyMenu.js"></script>   
 </body>
 </html>
 <style>
   #content{
+    margin-top: 50px;
     height: 200px;
     width: 100%;
     background: pink

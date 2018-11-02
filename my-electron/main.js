@@ -16,7 +16,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1000,
         height: 800,
-        frame:false, //true弹窗周边菜单隐藏
+        // frame:false, //true弹窗周边菜单隐藏
     })
 
     // 开启渲染模式中的 tian.
@@ -32,8 +32,8 @@ function createWindow() {
     //(4)执行菜单操作
     require('./main/menu.js')
 
-    // 在主进程中引入 依赖
-    require('./renderer/ipcMain.js')
+    //主进程的分支 解决 渲染进程和主进程的通讯
+    require('./main/ipcMain.js');
 }
 app.on('ready', createWindow)
 

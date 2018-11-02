@@ -5,13 +5,13 @@ const Menu = remote.Menu
 
 //右键菜单
 var template2 = [{
-        label: '文件',
+        label: '(右键)文件',
         submenu: [{
             label: '编辑'
         }]
     },
     {
-        label: '资源',
+        label: '(右键)资源',
         submenu: [{
                 label: '贴吧',
                 click:function(){
@@ -25,11 +25,11 @@ var template2 = [{
         ]
     },
     {
-        label: '复制',
+        label: '(右键)复制',
         role:'copy' //复制
     },
     {
-        label: '剪切',
+        label: '(右键)剪切',
         role:'cut' //剪切
     }
 ]
