@@ -2,6 +2,9 @@ var electron = require('electron') //引入
 //创建实例
 var app = electron.app //控制生命周期模块
 
+//在mac下页面导航不显示在笔记本最上方 （隐藏窗体菜单）
+// app.dock.hide()
+
 //nodejs中的path模块
 var path = require('path');
 
@@ -12,6 +15,7 @@ var mainWindow = null
 
 //页面加载的时候创建是咧
 function createWindow() {
+    
     //创建实例打开window窗口 的宽高
     mainWindow = new BrowserWindow({
         width: 1000,
@@ -34,6 +38,12 @@ function createWindow() {
 
     //主进程的分支 解决 渲染进程和主进程的通讯
     require('./main/ipcMain.js');
+    
+    //渲染进程和渲染进程通讯
+    require('./main/xrjctx.js')
+
+
+    
 }
 app.on('ready', createWindow)
 

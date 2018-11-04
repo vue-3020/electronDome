@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="box1"></h1>
+    <br>
+    <h1 id="box2"></h1>
+</body>
+</html>
+<style>
+body{
+    background: pink
+}
+</style>
+<script>
+// localStorage接收参数
+var aid = localStorage.getItem('aid')
+var box1 = document.querySelector('#box1')
+console.log(aid)
+box1.innerHTML = aid
+
+//
+var box2 = document.querySelector('#box2')
+var {ipcRenderer} =require('electron');
+//返回父页面需要
+var BrowserWindow = require('electron').remote.BrowserWindow
+
+ipcRenderer.on('toxrjctx',(event,aid2,winId)=>{
+    console.log(aid2)
+    box2.innerHTML = aid2
+
+    //子页面 返回给父页面内容
+    console.log(winId) //
+    var firstWin = BrowserWindow.fromId(winId)
+    firstWin.webContents.send('toIndex','返回到父页面的信息')
+})
+</script>

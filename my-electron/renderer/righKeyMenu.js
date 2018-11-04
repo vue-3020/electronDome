@@ -35,9 +35,10 @@ var template2 = [{
   }
 ]
 var m2 = Menu2.buildFromTemplate(template2);
-Menu2.setApplicationMenu(m2);
+
 //右键菜单
 window.addEventListener('contextmenu', function (e) {
+
   //阻止当前窗口默认事件
   e.preventDefault();
   //在当前窗口点击右键的时候弹出  定义的菜单模板

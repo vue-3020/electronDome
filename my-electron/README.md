@@ -285,3 +285,174 @@ sendsyncDom.onclick = function(){
     event.returnValue = '这是第三次同步返回的数据'
  })
 ```
+## **渲染进程和渲染进程之间的通讯**
+ 第一种 通过localStorage进行页面通讯
+```
+//渲染页面发送存储
+var {ipcRenderer} =require('electron');
+var xuanRanBtn = document.querySelector('#xuanRan')
+xuanRanBtn.onclick = function(){
+   ipcRenderer.send('openWindow') 
+   var count = '通过localStorage，传递到渲进程，在弹窗打开'
+   localStorage.setItem('aid',count)
+}
+
+//渲染页面接收 xrjctx.thml
+var aid = localStorage.getItem('aid')
+var box1 = document.querySelector('#box1')
+console.log(aid)
+box1.innerHTML = aid
+```
+第二种通过 BrowserWindow 和 webContents 模块实现渲染进 程和渲染进程的通信。
+> openWindow.js --> xrjctx.js-->xrjctc.html 
+```
+// openWindow.js 文件
+var {ipcRenderer} =require('electron');
+var xuanRanBtn = document.querySelector('#xuanRan')
+xuanRanBtn.onclick = function(){
+// 通过ipcRenderer 穿参数
+   var aid = '通过ipcRenderer 穿参数11111111'
+   ipcRenderer.send('openWindow',aid) 
+}
+
+// 主进程 xrjctx.js
+var path = require('path');
+var win = null;
+ipcMain.on('openWindow', function (event,aid) {
+    win = new BrowserWindow({
+        width: 400,
+        height: 400
+    })
+    win.loadURL(path.join('file:', __dirname, '../xrjctx.html'))
+    win.webContents.openDevTools()
+
+    win.webContents.on('did-finish-load',(event)=>{
+    win.webContents.send('toxrjctx',aid)//winId 传送的是第一个窗口
+    })
+
+    win.on('closed', function () {
+        win = null
+    })
+})
+
+// xrjctc.html 接收
+var box2 = document.querySelector('#box2')
+var {ipcRenderer} =require('electron');
+ipcRenderer.on('toxrjctx',(event,aid2)=>{
+    box2.innerHTML = aid2
+})
+```
+第三种 子页面返回给父页面值
+```
+// xrjctx.js 页面
+ipcMain.on('openWindow', function (event,aid) {
+    //获取当前窗口的对象返回给父页面信息用的 ，放在上面是第一个窗口，放在这里是第二个v 窗口
+    var winId = BrowserWindow.getFocusedWindow().id
+
+    //获取openWindow 传过来的参数 监听当前窗口加载完成的事件
+    win.webContents.on('did-finish-load',(event)=>{
+        win.webContents.send('toxrjctx',aid,winId)//winId 传送的是第一个窗口
+    })
+})
+
+// xrjctc.html返回父页面需要
+var BrowserWindow = require('electron').remote.BrowserWindow
+ipcRenderer.on('toxrjctx',(event,aid2,winId)=>{
+    //子页面 返回给父页面内容
+    console.log(winId) //
+    var firstWin = BrowserWindow.fromId(winId)
+    firstWin.webContents.send('toIndex','返回到父页面的信息')
+})
+
+//  openWindow.js接收
+var box3= document.querySelector('#box3')
+ipcRenderer.on('toIndex',function(event,data){
+    box3.innerHTML =data
+    console.log(data)
+})
+```
+## **shell 模块 ，打开浏览器**
+```
+// html
+<a id="aDom" href="http://electronjs.org/docs/api/shell"> 点击调用打开外部浏览器</a>
+
+// link.js
+//引入模块 属于渲染进程，页属于住进程
+var {shell} =require('electron')
+var aDom = document.querySelector('#aDom')
+
+//sheel 打开外部浏览器
+aDom.onclick = function(e){
+    //阻止默认行为
+    e.preventDefault()
+    //shell 模块打开 外部浏览器
+    var href = this.getAttribute('href')
+    shell.openExternal(href)
+}
+```
+## **Electron DOM <webview> 标签**
+Webview 与 iframe 有点相似，但是与 iframe 不同, webview 和你的应用运行的是不同的进 程。它不拥有渲染进程的权限，并且应用和嵌入内容之间的交互全部都是异步的。因为这能 保证应用的安全性不受嵌入内容的影响
+```
+<webview id="webview" src="https://www.baidu.com" style="position:fixed; width:100%; height:100%">
+</webview>
+```
+
+## **主进程通知渲染进程修改，webview里的href链接变化**
+- 用到了主进程向 渲染进程广播内容 win.webContents.send('openWebview',url)
+- BrowserWindow获取窗口 win = BrowserWindow.getFocusedWindow()
+- 菜单的点击事件
+```
+ // html
+<webview id="webview" src="https://www.baidu.com/" style=" width:100%; height:300px;background: blue">
+  </webview>
+
+// 主进程
+function opentWebView(url){
+    //获取打开的窗口 
+    var win = BrowserWindow.getFocusedWindow()
+    //广播给 webview.js 中
+    win.webContents.send('openWebview',url)
+}
+{
+    label: '链接切换爱奇艺',
+    click: function(){
+        opentWebView('https://www.iqiyi.com/')
+    } 
+}
+
+//渲染进程
+var {ipcRenderer}= require('electron')
+var webview = document.querySelector('#webview')
+ipcRenderer.on('openWebview',function(err,data){
+    webview.src = data
+})
+
+```
+
+## 简易编辑器
+- 打开：文本获取内容，用到 （1）主进程向渲染进程发消息（2）弹窗获取路径
+（3）fs读取路径  （4）绑定到Dom上
+（5）   编辑的时候要夹 星*号， 第一次要弹出保存路径，第二次输入不用弹出保存路径，直接保存，点击新建和打开之前提示是否保存
+
+- 存储：内容， （1）Dom获取，（2）fs写入流（3）通过弹窗指定存储路径
+- 
+
+## 设置快捷键  
+```
+// accelerator："Ctrl+P", 设置快捷键
+{
+    label: '打印',
+    accelerator:"Ctrl+P",
+    click: function(){}
+},
+
+//实现打印功能呢
+{
+    label: '打印',
+    accelerator:"Ctrl+P",
+    click: function () {
+        //打印功能通过 webContents  https://electronjs.org/docs/api/web-contents
+        BrowserWindow.getFocusedWindow().webContents.print();
+    }
+},
+```
