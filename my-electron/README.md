@@ -585,3 +585,11 @@ imgsBtn.onclick =function(){
     document.body.appendChild(imgDome)
 }
 ```
+## **electron-vue 下载**
+```
+下载
+
+npm install -g vue-cli
+vue init simulatedgreg/electron-vue my-project
+
+```
