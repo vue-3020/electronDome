@@ -437,7 +437,7 @@ ipcRenderer.on('openWebview',function(err,data){
 - 存储：内容， （1）Dom获取，（2）fs写入流（3）通过弹窗指定存储路径
 - 
 
-## 设置快捷键  
+## **设置快捷键**  
 ```
 // accelerator："Ctrl+P", 设置快捷键
 {
@@ -455,4 +455,133 @@ ipcRenderer.on('openWebview',function(err,data){
         BrowserWindow.getFocusedWindow().webContents.print();
     }
 },
+```
+
+## **增加代码高亮插件**
+CodeMirror
+```
+下载 npm install codemirror
+```  
+## **系统托盘 托盘右键菜单 托盘光标闪烁 点击右上角关闭按钮隐藏托盘**
+- 开启渲染模式中的 开启控制台 托盘不表不显示  要关闭控制台
+```
+//通过Tray 模块图标显示在控制台
+const {Tray} = require('electron')
+var path = require('path')
+var iconTray = new Tray(path.join(__dirname,'../static/lover.png'))
+
+// 增加托盘事件
+var trayMenu = Menu.buildFromTemplate([
+    {
+        label:'设置',
+        click:function(){
+          console.log('setting')
+        }
+      },
+    }
+])
+iconTray.setContextMenu(trayMenu);
+
+//提示信息
+iconTray.setToolTip('electron应用');
+
+//监听任务栏的单双击事件
+var win=BrowserWindow.getFocusedWindow(); h获取不到值
+下面没法进行
+
+//
+
+```
+## **实现消息通知**
+```
+html 代码
+<button id="notice">点击按钮实现通知</button>
+
+js代码
+var path =require('path')
+var notice = document.querySelector('#notice')
+notice.onclick = function(){
+    var option ={
+        title:'electron 通知api',
+        body:'平台软件更新 通知',
+        icon:path.join('static/lover3.jpg')
+    }
+    var myNotification = new window.Notification(option.title,option)
+    myNotification.onclick = function(){
+        console.log('点击了事件')
+    }
+}
+```
+## **听网络变化**
+```
+window.addEventListener('online',function(){
+    console.log('有网络了')
+})
+
+window.addEventListener('offline',function(){
+    console.log('没有网络')
+})
+```
+## **注册全局快捷键**
+```
+在 globalShortcart.js中的内容
+
+//在主进程里进行快捷键
+var {globalShortcut,app} = require('electron')
+//在ready中注册事件 可以监听多个在main中也有一个
+app.on('ready',function(){
+    globalShortcut.register('ctrl+e',function(){
+        console.log('ctrl+e')
+    })
+    //检测是否注册 
+    console.log(globalShortcut.isRegistered('ctrl+e'))
+})
+
+//要退出的时候取消全局快捷键
+app.on('will-quit',function(){
+    globalShortcut.unregister('ctrl+e')
+})
+
+在main里的内容 
+在createWindow 外面注册
+app.on('ready', createWindow)
+// 页面一进来就夹在内容
+require('./main/globalShortcart.js')
+```
+## **剪切板**
+渲染进程和主进程都可以应用
+```
+html代码
+<button id="inputBtn">点击复制到文本框</button>
+js代码
+//剪切板 可以在主进程用页可以在渲染进程用
+var {clipboard} =require('electron')
+var inputs = document.querySelector('#inputs')
+var inputBtn = document.querySelector('#inputBtn')
+inputBtn.onclick =function(){
+    //获取消息
+    clipboard.writeText(code.innerHTML)
+    //获取粘贴内容
+    inputs.value = clipboard.readText()
+}
+```
+
+## **剪切复制图片**
+```
+var imgsBtn = document.querySelector('#imgsBtn');
+
+imgsBtn.onclick =function(){
+    var images = nativeImage.createFromPath('./static/lover3.jpg')
+ //复制图片
+    clipboard.writeImage(images)
+
+    //粘贴图片
+    var imgSrc = clipboard.readImage().toDataURL();
+    console.log(imgSrc)
+
+    //将图片插入到页面里面
+    imgDome = new Image()
+    imgDome.src = imgSrc
+    document.body.appendChild(imgDome)
+}
 ```

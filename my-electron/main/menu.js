@@ -51,12 +51,22 @@ var template = [{
 
         label: '编辑2',
         submenu: [{
+                label: '刷新一下',
+                accelerator: 'ctrl+r',
+                role: 'reload'
+            },
+            {
                 label: '复制',
                 role: 'copy'
             },
             {
                 label: '截切',
                 role: 'cut'
+            },
+            {
+                label: '粘贴',
+                accelerator: 'ctrl+v',
+                role: 'paste'
             }
         ]
     },

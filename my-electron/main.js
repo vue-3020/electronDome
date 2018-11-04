@@ -13,6 +13,7 @@ var BrowserWindow = electron.BrowserWindow; //BrowserWindow 和窗口相关的�
 //保存 变量
 var mainWindow = null
 
+
 //页面加载的时候创建是咧
 function createWindow() {
     
@@ -23,18 +24,26 @@ function createWindow() {
         // frame:false, //true弹窗周边菜单隐藏
     })
 
-    // 开启渲染模式中的 tian.
+    // 开启渲染模式中的 开启控制台 托盘不表不显示
     mainWindow.webContents.openDevTools()
     //把index加载到窗口里面
     // mainWindow.loadFile('index.html');
     mainWindow.loadURL(path.join('file:', __dirname, 'index.html'));
 
+      
+    // 系统托盘
+    require('./main/trays.js');
     //监听关闭窗口
-    mainWindow.on('closed', () => {
+    
+    mainWindow.on('closed', (e) => {
+    
+        e.preventDefault() //阻止默认行为
         mainWindow = null
     })
+
+
     //(4)执行菜单操作
-    require('./main/menu.js')
+    require('./main/menu.js');
 
     //主进程的分支 解决 渲染进程和主进程的通讯
     require('./main/ipcMain.js');
@@ -43,9 +52,13 @@ function createWindow() {
     require('./main/xrjctx.js')
 
 
-    
+ 
 }
+
 app.on('ready', createWindow)
+// 页面一进来就夹在内容
+
+require('./main/globalShortcart.js')
 
 //页面全部关闭
 app.on('window-all-clod', function () {

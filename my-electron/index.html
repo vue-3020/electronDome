@@ -56,6 +56,25 @@
       <button id="saveDialog">另存为功能：可以选择类型</button>
   </div>
   <script src="renderer/dialog.js"></script>
+  <br>  
+  <!-- 左下角消息提示框 -->
+  <h1>通过按钮实现内容提示</h1>
+  <button id="notice">点击按钮实现通知</button>
+  <script src="renderer/notice.js"></script>
+  <br>
+  <br>
+  <script src="renderer/network.js"></script>
+  <br>
+  <!-- 双击复制功能 -->
+  机器猫：<span class="red" id="code">234567898765432345678345676 呵呵</span>
+  <input type="text" id="inputs">
+  <button id="inputBtn">点击复制到文本框</button>
+  
+  <br>  
+  <br>
+  <button id="imgsBtn">复制图片</button>
+  <br>
+  <script src="renderer/clipboard.js"></script>
 </body>
 </html>
 <style>
@@ -69,5 +88,11 @@
       padding: 6px 10px;
       margin: 5px;
   }
-  #box3{color: red}
+  #box3,.red{color: red}
+  #inputs {
+      width: 400px;
+      height: 40px;
+      background: burlywood;
+      border: 1px solid red
+  }
 </style>
