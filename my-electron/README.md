@@ -18,8 +18,10 @@ cd electron-quick-start
 #装依赖运行
 npm install
 
-#运行
+#运行 或者 
 npm start
+或 点执行
+electron .
 ```
 
 第二 手动搭建项目；

@@ -204,10 +204,27 @@ export default {
   },
   methods: {
     doLogin(link) {
-	  console.log(this.form)
-	  
-	  //请求api接口
-	//   this.$http.post()
+      this.$http.get( "https://www.easy-mock.com/mock/5bbab3f329a4d80bbccbcb81/example/kfc2", {
+        
+      }).then(response => {
+          var data = response.data;
+          console.log(data);
+          if (response.statusText == "OK") {
+            localStorage.setItem("userinfo",'1234567890');
+
+            //关闭弹出
+            this.dialogFormVisible = false;
+          }else{
+            //没有获取数据，提示报错
+            this.$message({
+							message: response.message,
+							type: 'warning'
+						});
+          }
+        })
+        .catch(function (error) {
+					console.log(error);
+				});
     }
   }
 };
