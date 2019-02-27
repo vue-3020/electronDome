@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        获取主页内容
+    </div>
+</body>
+
+</html>
+<script>
+    var keys = localStorage.getItem("keys");
+    console.log(keys);
+
+    //接收主进程
+    const {
+        ipcRenderer
+    } = require('electron')
+    ipcRenderer.on('toNews', function(event, aid) {
+        console.log(aid);
+    })
+</script>

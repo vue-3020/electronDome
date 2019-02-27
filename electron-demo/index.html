@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body style="overflow: auto; height: 30000px;">
+    <div>渲染进程</div>
+    <textarea id="content" style="width:100%;height: 200px;"></textarea>
+    <br>
+    <button id="button">渲染进程 读取本地文件</button>
+    <br>
+    <br>
+    <button id="btn">remote 模块: 主进程和渲染进程通信</button>
+    <br>
+    <br>
+    <button id="btn3">渲染进程和渲染进程通信</button>
+    <br>
+    <br>
+    <a href="https://www.baidu.com/" id="adom">外部打开浏览器</a>
+    <br>
+    <a href="https://www.baidu.com/">内部打开浏览器</a>
+    <br>
+    <webview id="webview" src="https://www.baidu.com">
+    </webview>
+
+    <br>
+    <br>
+    <button id="error">失败提示框</button>
+    <br>
+    <br>
+    <button id="mesageBox">信息提示 mesageBox</button>
+    <br>
+    <br>
+    <button id="openDialog">打开文件夹和打开文件</button>
+    <br>
+    <br>
+    <button id="saveDialog">保存设置类型</button>
+    <br>
+    <br>
+    <br>
+    <button id="btn4">点击按钮获取消息通知</button>
+</body>
+
+</html>
+<!-- 渲染进程 读取本地文件 -->
+<script>
+    var fs = require('fs');
+
+    var content = document.getElementById('content');
+    var button = document.getElementById('button');
+
+    button.addEventListener('click', function(e) {
+        fs.readFile('package.json', 'utf8', function(err, data) {
+            content.textContent = data;
+            console.log(data);
+        });
+    });
+</script>
+
+<!-- remote 模块: 主进程和渲染进程通信 -->
+<script src="renderer/1remote.js"></script>
+
+<!-- Menu 模块 自定义菜单 -->
+<script src="renderer/2Menu.js"></script>
+
+<!-- 渲染进程给主进程发送异步消息 -->
+<script src="renderer/3ipcRenderer.js"></script>
+
+<!-- 渲染进程和渲染进程 -->
+<script src="renderer/4BrowserWindow.js"></script>
+
+<!-- shell 模块提供了集成其他桌面客户端的关联功能. -->
+<script src="renderer/5shell.js"></script>
+
+<!-- 弹出框 -->
+<script src="renderer/6dialog.js"></script>
+
+<!-- 消息通知 -->
+<script src="renderer/7Notification.js"></script>
