@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
 </head>
+
 <body>
   <div id="content">
-      <p>拖拽功能</p>
+    <p>拖拽功能</p>
   </div>
   <div>
-      <button  id="btn">点击调用json</button>
-      <textarea id="textarea" cols="20" rows="20"></textarea>
+    <button id="btn">点击调用json</button>
+    <textarea id="textarea" cols="20" rows="20"></textarea>
   </div>
   <br>
   <button id="remover">调用主进程打开新窗口</button>
@@ -24,19 +26,17 @@
   <button id="sendsync">同步广播 （主进程和渲染进程）</button>
   <br>
   <button id="xuanRan">通过localStorage渲染进程调用渲染进程的方法</button>
-  
-  <script src="renderer/index.js"></script>
-  <script src="renderer/remover.js"></script>
+  <script src="renderer/index.js"></script><script src="renderer/remover.js"></script>
   <!-- 调用主进程的方法 -->
   <script src="renderer/ipcRenderer.js"></script>
   <!-- 右键菜单 -->
-  <script src="renderer/righKeyMenu.js"></script>  
+  <script src="renderer/righKeyMenu.js"></script>
   <br>
   <h1 id="box3"></h1>
   <br>
   <!-- 数据在子进程中打开 -->
-  <script src="renderer/openWindow.js"></script> 
-  <br>  
+  <script src="renderer/openWindow.js"></script>
+  
   <a id="aDom" href="http://electronjs.org/docs/api/shell"> 点击调用打开外部浏览器</a>
 
   <!-- 打开外部浏览器 -->
@@ -47,16 +47,16 @@
   <webview id="webview" src="https://www.baidu.com/" style=" width:100%; height:300px;background: blue">
   </webview>
   <script src="renderer/webview.js"></script>
-  <br>
+ 
   <div>
-      <h2></h2>
-      <button id="dialogDialog">警告：对话框</button>
-      <button id="mesageDialog">是否确认：对话框</button>
-      <button id="openDialog">打开文件，或者文件夹，可以多选</button>
-      <button id="saveDialog">另存为功能：可以选择类型</button>
+    <h2></h2>
+    <button id="dialogDialog">警告：对话框</button>
+    <button id="mesageDialog">是否确认：对话框</button>
+    <button id="openDialog">打开文件，或者文件夹，可以多选</button>
+    <button id="saveDialog">另存为功能：可以选择类型</button>
   </div>
   <script src="renderer/dialog.js"></script>
-  <br>  
+
   <!-- 左下角消息提示框 -->
   <h1>通过按钮实现内容提示</h1>
   <button id="notice">点击按钮实现通知</button>
@@ -69,30 +69,37 @@
   机器猫：<span class="red" id="code">234567898765432345678345676 呵呵</span>
   <input type="text" id="inputs">
   <button id="inputBtn">点击复制到文本框</button>
-  
-  <br>  
+
+  <br>
   <br>
   <button id="imgsBtn">复制图片</button>
   <br>
   <script src="renderer/clipboard.js"></script>
 </body>
+
 </html>
 <style>
-  #content{
+  #content {
     margin-top: 50px;
     height: 200px;
     width: 100%;
     background: pink
   }
-  button{
-      padding: 6px 10px;
-      margin: 5px;
+
+  button {
+    padding: 6px 10px;
+    margin: 5px;
   }
-  #box3,.red{color: red}
+
+  #box3,
+  .red {
+    color: red
+  }
+
   #inputs {
-      width: 400px;
-      height: 40px;
-      background: burlywood;
-      border: 1px solid red
+    width: 400px;
+    height: 40px;
+    background: burlywood;
+    border: 1px solid red
   }
 </style>

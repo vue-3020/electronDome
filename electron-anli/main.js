@@ -16,11 +16,14 @@ var mainWindow = null
 
 //页面加载的时候创建是咧
 function createWindow() {
-    
+
     //创建实例打开window窗口 的宽高
     mainWindow = new BrowserWindow({
         width: 1000,
         height: 800,
+        webPreferences: {
+            nodeIntegration: true //如果不写这个  有些浏览器属性不能用
+        }
         // frame:false, //true弹窗周边菜单隐藏
     })
 
@@ -30,13 +33,13 @@ function createWindow() {
     // mainWindow.loadFile('index.html');
     mainWindow.loadURL(path.join('file:', __dirname, 'index.html'));
 
-      
+
     // 系统托盘
     require('./main/trays.js');
     //监听关闭窗口
-    
+
     mainWindow.on('closed', (e) => {
-    
+
         e.preventDefault() //阻止默认行为
         mainWindow = null
     })
@@ -47,12 +50,12 @@ function createWindow() {
 
     //主进程的分支 解决 渲染进程和主进程的通讯
     require('./main/ipcMain.js');
-    
+
     //渲染进程和渲染进程通讯
     require('./main/xrjctx.js')
 
 
- 
+
 }
 
 app.on('ready', createWindow)
